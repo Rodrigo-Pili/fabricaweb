@@ -42,7 +42,7 @@ public class UsuarioController extends HttpServlet {
 			UsuarioDAO dao = new UsuarioDAO();
 			dao.excluir((usu));
 			
-			resp.getWriter().print("<b>Excluido com Sucesso<b>");
+			resp.sendRedirect("usucontroller?acao=lis");
 		}else if(acao.equals("lis")){
 			
 			UsuarioDAO dao = new UsuarioDAO();
@@ -51,6 +51,24 @@ public class UsuarioController extends HttpServlet {
 			req.setAttribute("lista", lista);
 			RequestDispatcher dispatcher = req.getRequestDispatcher("WEB-INF/listausu.jsp");
 			dispatcher.forward(req, resp);
+		}else  if(acao.equals("alt")) {
+			String id = req.getParameter("id");
+			
+			Usuario usu = new UsuarioDAO().buscaPorId(Integer.parseInt(id));
+			req.setAttribute("usu", usu);
+			
+			RequestDispatcher dispatcher = req.getRequestDispatcher("WEB-INF/formusuario.jsp");
+			dispatcher.forward(req, resp);
+		}else if(acao.equals("cad")) {
+			Usuario usu = new Usuario();
+			usu.setId(0);
+			usu.setNome("");
+			usu.setLogin("");
+			usu.setSenha("");
+			req.setAttribute("usu", usu);
+			
+			RequestDispatcher dispatcher = req.getRequestDispatcher("WEB-INF/formusuario.jsp");
+			dispatcher.forward(req, resp);
 		}
 	}
 
@@ -58,7 +76,11 @@ public class UsuarioController extends HttpServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		System.out.println("chamou doPost!");
 
-		String id = req.getParameter("id");
+		String id = null;
+		
+		if(!req.getParameter("id").equals("")) {
+			id = req.getParameter("id");
+		}
 		String nome = req.getParameter("nome");
 		String login = req.getParameter("login");
 		String senha = req.getParameter("senha");

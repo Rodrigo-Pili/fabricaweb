@@ -7,6 +7,17 @@
 <head>
 <meta charset="UTF-8" content="text/html">
 <title>Lista de Usuarios</title>
+
+<script type="text/javascript">
+	function confirmaExclusao(id) {
+		if(window.confirm('Tem certeza que deseja excluir?')){
+			location.href="usucontroller?acao=excluir&id="+id;
+		}
+	}
+
+
+</script>
+
 </head>
 <body>
 	<%
@@ -24,7 +35,7 @@
 		<tr>
 			<td><%=u.getId()%></td>
 			<td><%=u.getNome()%></td>
-			<td><a href="usucontroller?acao=excluir&id=<%=u.getId() %>">exlcuir</a></td>
+			<td><a href="javascript:confirmaExclusao(<%=u.getId() %>)">exlcuir</a> | <a href="usucontroller?acao=alt&id=<%= u.getId() %>">alterar</a></td>
 		</tr>
 		<%
 			}
